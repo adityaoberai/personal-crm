@@ -59,11 +59,11 @@ A simple single-page personal CRM built with **SvelteKit** and **Appwrite**, wit
 Create a `.env` file in the project root:
 
 ```env
-APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+APPWRITE_ENDPOINT=https://<REGION>.cloud.appwrite.io/v1
 APPWRITE_PROJECT_ID=your_project_id
 APPWRITE_API_KEY=your_secret_api_key
-APPWRITE_DATABASE_ID=crm
-APPWRITE_COLLECTION_ID=contacts
+APPWRITE_DATABASE_ID=db
+APPWRITE_COLLECTION_ID=crm
 ```
 
 ---
@@ -120,19 +120,19 @@ You can preview the production build with `npm run preview`.
 
 ### Appwrite Database Structure
 
-**Database:** `crm`
-**Collection:** `contacts`
+**Database:** `db`
+**Collection:** `crm`
 
 **Attributes:**
 ```
 name     | String  | Required | Size: 255
-email    | String  | Required | Size: 255  
-phone    | String  | Optional | Size: 50
-notes    | String  | Optional | Size: 1000
+email    | Email   | Required |  
+phone    | String  | Optional | Size: 25
+notes    | String  | Optional | Size: 2000
 ```
 
 **Permissions:**
-- Role: Any → Read, Create, Update, Delete
+- None (we use an API key instead)
 
 ### Environment Variables
 
@@ -141,8 +141,8 @@ notes    | String  | Optional | Size: 1000
 | `APPWRITE_ENDPOINT` | Your Appwrite server endpoint |
 | `APPWRITE_PROJECT_ID` | Your Appwrite project ID |
 | `APPWRITE_API_KEY` | API key with database permissions |
-| `APPWRITE_DATABASE_ID` | Database ID (default: "crm") |
-| `APPWRITE_COLLECTION_ID` | Collection ID (default: "contacts") |
+| `APPWRITE_DATABASE_ID` | Database ID (default: "db") |
+| `APPWRITE_COLLECTION_ID` | Collection ID (default: "crm") |
 
 ---
 

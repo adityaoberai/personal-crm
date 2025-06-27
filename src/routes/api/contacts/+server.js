@@ -3,8 +3,8 @@ import { ID } from 'node-appwrite';
 import { json } from '@sveltejs/kit';
 import { env } from "$env/dynamic/private";
 
-const databaseId = env.APPWRITE_DATABASE_ID;
-const collectionId = env.APPWRITE_COLLECTION_ID;
+const databaseId = env.APPWRITE_DATABASE_ID || 'db';
+const collectionId = env.APPWRITE_COLLECTION_ID || 'crm';
 
 // GET - List all contacts
 export async function GET() {
