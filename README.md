@@ -15,7 +15,7 @@ A simple single-page personal CRM built with **SvelteKit** and **Appwrite**, wit
 ## 📦 Features
 
 - ✅ List all contacts
-- ✅ Add a new contact  
+- ✅ Add a new contact
 - ✅ Edit an existing contact
 - ✅ Delete a contact
 - ✅ Modern responsive UI
@@ -103,12 +103,14 @@ You can preview the production build with `npm run preview`.
 ## 📱 Screenshots
 
 ### Main Interface
+
 - Clean, modern design with gradient background
 - Responsive grid layout for contact cards
 - Inline editing functionality
 - Confirmation dialogs for deletions
 
 ### Features Demonstrated
+
 - Add new contacts with required name/email fields
 - Edit contacts inline with save/cancel options
 - Delete contacts with confirmation
@@ -124,25 +126,27 @@ You can preview the production build with `npm run preview`.
 **Collection:** `crm`
 
 **Attributes:**
+
 ```
 name     | String  | Required | Size: 255
-email    | Email   | Required |  
+email    | Email   | Required |
 phone    | String  | Optional | Size: 25
 notes    | String  | Optional | Size: 2000
 ```
 
 **Permissions:**
+
 - None (we use an API key instead)
 
 ### Environment Variables
 
-| Variable | Description |
-|----------|-------------|
-| `APPWRITE_ENDPOINT` | Your Appwrite server endpoint |
-| `APPWRITE_PROJECT_ID` | Your Appwrite project ID |
-| `APPWRITE_API_KEY` | API key with database permissions |
-| `APPWRITE_DATABASE_ID` | Database ID (default: "db") |
-| `APPWRITE_COLLECTION_ID` | Collection ID (default: "crm") |
+| Variable                 | Description                       |
+| ------------------------ | --------------------------------- |
+| `APPWRITE_ENDPOINT`      | Your Appwrite server endpoint     |
+| `APPWRITE_PROJECT_ID`    | Your Appwrite project ID          |
+| `APPWRITE_API_KEY`       | API key with database permissions |
+| `APPWRITE_DATABASE_ID`   | Database ID (default: "db")       |
+| `APPWRITE_COLLECTION_ID` | Collection ID (default: "crm")    |
 
 ---
 
