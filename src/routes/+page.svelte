@@ -136,6 +136,41 @@
 		}
 	}
 
+	// Delete all contacts
+	async function deleteAllContacts() {
+		if (contacts.length === 0) {
+			alert('No contacts to delete');
+			return;
+		}
+
+		if (!confirm(`Are you sure you want to delete ALL ${contacts.length} contacts? This action cannot be undone.`)) {
+			return;
+		}
+
+		saving = true;
+		try {
+			const response = await fetch('/api/contacts', {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({}) // Empty body for delete all
+			});
+
+			if (response.ok) {
+				await loadContacts();
+				alert('All contacts have been deleted successfully');
+			} else {
+				const error = await response.json();
+				alert(`Failed to delete contacts: ${error.error}`);
+			}
+		} catch (error) {
+			console.error('Error deleting all contacts:', error);
+			alert('Error deleting contacts. Please try again.');
+		}
+		saving = false;
+	}
+
 	// Reset all changes
 	function resetChanges() {
 		if (confirm('Are you sure you want to reset all unsaved changes?')) {
@@ -178,6 +213,13 @@
 				disabled={saving || modifiedCount === 0}
 			>
 				{saving ? 'Saving...' : `Save All Changes (${modifiedCount})`}
+			</button>
+			<button
+				on:click={deleteAllContacts}
+				class="btn-danger"
+				disabled={saving || contacts.length === 0}
+			>
+				{saving ? 'Deleting...' : 'Delete All'}
 			</button>
 		</div>
 	</section>

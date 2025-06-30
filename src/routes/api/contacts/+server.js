@@ -1,15 +1,12 @@
-import { databases } from '$lib/appwrite.js';
-import { ID } from 'node-appwrite';
+import { db } from '$lib/appwrite.js';
+import { ID, Query } from 'node-appwrite';
 import { json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
-
-const databaseId = env.APPWRITE_DATABASE_ID || 'db';
-const collectionId = env.APPWRITE_COLLECTION_ID || 'crm';
 
 // GET - List all contacts
 export async function GET() {
 	try {
-		const response = await databases.listDocuments(databaseId, collectionId);
+		const response = await db.listDocuments();
 		return json(response.documents);
 	} catch (error) {
 		console.error('Error fetching contacts:', error);
@@ -22,16 +19,7 @@ export async function POST({ request }) {
 	try {
 		const { contacts } = await request.json();
 
-		// Prepare documents for upsert
-		const documents = contacts.map((contact) => ({
-			$id: contact.$id || ID.unique(),
-			name: contact.name,
-			email: contact.email,
-			phone: contact.phone,
-			notes: contact.notes
-		}));
-
-		const response = await databases.upsertDocuments(databaseId, collectionId, documents);
+		const response = await db.upsertDocuments(contacts);
 		return json(response);
 	} catch (error) {
 		console.error('Error upserting contacts:', error);
@@ -39,14 +27,22 @@ export async function POST({ request }) {
 	}
 }
 
-// DELETE - Delete a contact
+// DELETE - Delete contacts
 export async function DELETE({ request }) {
 	try {
 		const { id } = await request.json();
-		await databases.deleteDocument(databaseId, collectionId, id);
-		return json({ success: true });
+
+		let response;
+		if (id) {
+			// Single contact ID provided - use deleteDocument
+			response = await db.deleteDocument(id);
+		} else {
+			// No ID provided - delete all documents
+			response = await db.deleteDocuments();
+		}
+		return json(response);
 	} catch (error) {
-		console.error('Error deleting contact:', error);
-		return json({ error: 'Failed to delete contact' }, { status: 500 });
+		console.error('Error deleting contacts:', error);
+		return json({ error: 'Failed to delete contacts' }, { status: 500 });
 	}
 }
