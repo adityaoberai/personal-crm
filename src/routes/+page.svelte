@@ -2,10 +2,10 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 
-	let contacts = [];
-	let editingContacts = [];
-	let loading = false;
-	let saving = false;
+	let contacts = $state([]);
+	let editingContacts = $state([]);
+	let loading = $state(false);
+	let saving = $state(false);
 
 	// Initialize with one empty row for new contacts
 	function initializeEmptyRows() {
@@ -179,9 +179,9 @@
 	}
 
 	// Count modified contacts
-	$: modifiedCount = editingContacts.filter(
+	let modifiedCount = $derived(editingContacts.filter(
 		(c) => c.isModified || (c.isNew && (c.name.trim() || c.email.trim()))
-	).length;
+	).length);
 
 	onMount(loadContacts);
 </script>
@@ -203,19 +203,19 @@
 			<span class="stat modified">Modified: {modifiedCount}</span>
 		</div>
 		<div class="actions">
-			<button on:click={addMoreRows} class="btn-secondary"> + Add Row </button>
-			<button on:click={resetChanges} class="btn-cancel" disabled={modifiedCount === 0}>
+			<button onclick={addMoreRows} class="btn-secondary"> + Add Row </button>
+			<button onclick={resetChanges} class="btn-cancel" disabled={modifiedCount === 0}>
 				Reset Changes
 			</button>
 			<button
-				on:click={saveAllChanges}
+				onclick={saveAllChanges}
 				class="btn-primary"
 				disabled={saving || modifiedCount === 0}
 			>
 				{saving ? 'Saving...' : `Save All Changes (${modifiedCount})`}
 			</button>
 			<button
-				on:click={deleteAllContacts}
+				onclick={deleteAllContacts}
 				class="btn-danger"
 				disabled={saving || contacts.length === 0}
 			>
@@ -250,7 +250,7 @@
 								<td class="col-name">
 									<input
 										bind:value={contact.name}
-										on:input={() => markAsModified(index)}
+										oninput={() => markAsModified(index)}
 										placeholder="Enter name..."
 										class="cell-input"
 										class:required={!contact.name.trim()}
@@ -259,7 +259,7 @@
 								<td class="col-email">
 									<input
 										bind:value={contact.email}
-										on:input={() => markAsModified(index)}
+										oninput={() => markAsModified(index)}
 										placeholder="Enter email..."
 										type="email"
 										class="cell-input"
@@ -269,7 +269,7 @@
 								<td class="col-phone">
 									<input
 										bind:value={contact.phone}
-										on:input={() => markAsModified(index)}
+										oninput={() => markAsModified(index)}
 										placeholder="Enter phone..."
 										class="cell-input"
 									/>
@@ -277,7 +277,7 @@
 								<td class="col-notes">
 									<textarea
 										bind:value={contact.notes}
-										on:input={() => markAsModified(index)}
+										oninput={() => markAsModified(index)}
 										placeholder="Enter notes..."
 										class="cell-textarea"
 										rows="2"
@@ -285,7 +285,7 @@
 								</td>
 								<td class="col-actions">
 									<button
-										on:click={() => deleteContact(contact, index)}
+										onclick={() => deleteContact(contact, index)}
 										class="btn-delete-small"
 										title={contact.isNew ? 'Remove row' : 'Delete contact'}
 									>
