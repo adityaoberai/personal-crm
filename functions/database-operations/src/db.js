@@ -32,7 +32,7 @@ class DatabaseService {
     async deleteDocument(documentId) {
         try {
             const response = await this.databases.deleteDocument(this.databaseId, this.collectionId, documentId);
-            this.log('Document deleted successfully:', response.$id);
+            this.log('Document deleted successfully:', documentId);
             return response;
         } catch (error) {
             this.error('Error deleting document:', error);
