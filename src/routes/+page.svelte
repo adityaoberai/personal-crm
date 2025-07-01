@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import '../app.css';
+	import { PUBLIC_APPWRITE_FUNCTION_URL } from '$env/static/public';
 
 	let contacts = [];
 	let editingContacts = [];
@@ -9,6 +10,11 @@
 
 	// Initialize with one empty row for new contacts
 	function initializeEmptyRows() {
+		// Ensure contacts is always an array to prevent map errors
+		if (!Array.isArray(contacts)) {
+			contacts = [];
+		}
+		
 		const emptyRow = {
 			name: '',
 			email: '',
@@ -27,15 +33,33 @@
 	async function loadContacts() {
 		loading = true;
 		try {
-			const response = await fetch('/api/contacts');
+			const response = await fetch(`${PUBLIC_APPWRITE_FUNCTION_URL}/contacts`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
 			if (response.ok) {
-				contacts = await response.json();
+				const data = await response.json();
+				// Handle both Appwrite Function response (with documents array) and direct array
+				if (data && data.documents && Array.isArray(data.documents)) {
+					contacts = data.documents;
+				} else if (Array.isArray(data)) {
+					contacts = data;
+				} else {
+					console.error('Invalid response format:', data);
+					contacts = [];
+				}
 				initializeEmptyRows();
 			} else {
 				console.error('Failed to load contacts');
+				contacts = [];
+				initializeEmptyRows();
 			}
 		} catch (error) {
 			console.error('Error loading contacts:', error);
+			contacts = [];
+			initializeEmptyRows();
 		}
 		loading = false;
 	}
@@ -82,7 +106,7 @@
 				return;
 			}
 
-			const response = await fetch('/api/contacts', {
+			const response = await fetch(`${PUBLIC_APPWRITE_FUNCTION_URL}/contacts`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -118,12 +142,11 @@
 		}
 
 		try {
-			const response = await fetch('/api/contacts', {
+			const response = await fetch(`${PUBLIC_APPWRITE_FUNCTION_URL}/contacts?id=${contact.$id}`, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ id: contact.$id })
+				}
 			});
 
 			if (response.ok) {
@@ -149,7 +172,7 @@
 
 		saving = true;
 		try {
-			const response = await fetch('/api/contacts', {
+			const response = await fetch(`${PUBLIC_APPWRITE_FUNCTION_URL}/contacts`, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json'
