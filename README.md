@@ -170,7 +170,7 @@ Returns all contacts from the database.
 }
 ```
 
-### POST `/contacts`
+### PUT `/contacts`
 Creates new contacts or updates existing ones (bulk upsert).
 
 **Request Body:**

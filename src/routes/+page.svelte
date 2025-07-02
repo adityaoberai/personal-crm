@@ -107,7 +107,7 @@
 			}
 
 			const response = await fetch(`${PUBLIC_APPWRITE_FUNCTION_URL}/contacts`, {
-				method: 'POST',
+				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
 				},

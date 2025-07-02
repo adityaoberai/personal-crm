@@ -24,7 +24,7 @@ Sample `200` Response:
 ]
 ```
 
-### POST /contacts
+### PUT /contacts
 
 - Creates a new contact or updates an existing one (upsert operation).
 - If a contact with the same email exists, it will be updated. Otherwise, a new contact is created.

@@ -18,7 +18,7 @@ export default async ({ req, res, log, error }) => {
 		});
   }
   if(req.path === "/contacts") {
-    if (req.method === "POST") {
+    if (req.method === "PUT") {
       try {
         const { contacts } = req.bodyJson;
         if (!contacts || !Array.isArray(contacts)) {
