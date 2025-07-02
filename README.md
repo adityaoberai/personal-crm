@@ -18,7 +18,6 @@ A modern personal CRM application built with **SvelteKit** and **Appwrite Functi
 - ✅ Spreadsheet-like interface for contact management
 - ✅ Real-time CRUD operations (Create, Read, Update, Delete)
 - ✅ Bulk editing capabilities
-- ✅ Auto-save functionality
 - ✅ Modern responsive design with gradient backgrounds
 - ✅ No authentication required (personal use)
 - ✅ CSV import/export support
@@ -76,9 +75,9 @@ appwrite deploy function
 Create a `.env` file in the project root:
 
 ```env
-PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+PUBLIC_APPWRITE_ENDPOINT=https://region.cloud.appwrite.io/v1
 PUBLIC_APPWRITE_PROJECT_ID=your_project_id
-PUBLIC_APPWRITE_FUNCTION_URL=https://cloud.appwrite.io/v1/projects/your_project_id/functions/database-operations/executions
+PUBLIC_APPWRITE_FUNCTION_URL=https://654321.fra.appwrite.network
 ```
 
 ### Function Environment
@@ -122,16 +121,6 @@ appwrite run functions
 
 ---
 
-## 🖥️ UI Features
-
-- **Spreadsheet Interface**: Excel-like editing experience
-- **Auto-save**: Changes are saved automatically as you type
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Modern Gradient UI**: Beautiful color schemes and animations
-- **Bulk Operations**: Edit multiple contacts simultaneously
-
----
-
 ## 🌐 Deployment
 
 ### Frontend Deployment
@@ -162,12 +151,13 @@ The function will be available at your Appwrite project's function URL.
 
 The Appwrite Function provides the following endpoints:
 
-### GET /contacts
+### GET `/contacts`
 Returns all contacts from the database.
 
 **Response:**
 ```json
 {
+  "total": 1,
   "documents": [
     {
       "$id": "contact_id",
@@ -180,7 +170,7 @@ Returns all contacts from the database.
 }
 ```
 
-### POST /contacts
+### POST `/contacts`
 Creates new contacts or updates existing ones (bulk upsert).
 
 **Request Body:**
@@ -197,38 +187,11 @@ Creates new contacts or updates existing ones (bulk upsert).
 }
 ```
 
-### DELETE /contacts
-Deletes multiple contacts by their IDs.
+### DELETE `/contacts?id=<id>`
+Deletes contact by their ID in the query.
 
-**Request Body:**
-```json
-{
-  "ids": ["contact_id_1", "contact_id_2"]
-}
-```
-
----
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-**Function not responding:**
-- Check that the function is deployed: `appwrite functions list`
-- Verify environment variables in Appwrite console
-- Check function logs in Appwrite console
-
-**CORS errors:**
-- Ensure your domain is added to the Appwrite project platforms
-- Check that the function URL in `.env` is correct
-
-**Database permission errors:**
-- Verify collection permissions are set to `Role: Any`
-- Check that database and collection IDs match your configuration
-
-### Debug Mode
-
-Enable debug logging by setting `DEBUG=true` in your function environment variables.
+### DELETE `/contacts`
+Deletes all contacts.
 
 ---
 
